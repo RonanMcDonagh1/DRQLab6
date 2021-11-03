@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+
+//Axios is the http client used to commuincate with the server
 
 class Create extends Component {
     constructor() {
@@ -13,18 +16,33 @@ class Create extends Component {
             Poster: ''
         }
     }
-
+    //takes in the user inputs on the create screen and gives the movie name, year and poster link
     handleSubmit(event) {
         console.log("Name: " +this.state.Title+
         " Year: " + this.state.Year +
         "Poster: " + this.state.Poster);
+
+        const NewMovie = {
+            Title:this.state.Title,
+            Year:this.state.Year,
+            Poster:this.state.Poster
+        }
+
+        axios.post('http://localhost:4000/api/movies', NewMovie)
+        .then((response)=>{
+            console.log(response);
+        })
+        .catch((err)=>{
+            console.log(err);
+        })
+
         event.preventDefault();
         this.setState({
             Title:'',
             Year:'',
             Poster:''
         });
-    }
+    }//creates the movie details taken in from the user
     onChangeMovieName(event) {
         this.setState({
             Title: event.target.value
@@ -40,7 +58,8 @@ class Create extends Component {
             Poster: event.target.value
         })
     }
-
+    
+    //The prompt which the user has to input data into
     render() {
         return (
             <div>
